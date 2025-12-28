@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const MainNavigationScreen(),
     );
   }
 }
@@ -29,7 +29,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
   String _selectedLanguage = 'English';
 
   @override
@@ -71,8 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
       // Floating Job Helpline Button
       floatingActionButton: _buildFloatingJobHelpline(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      // Bottom Navigation Bar
-      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -698,6 +695,35 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+}
+
+// Main Navigation Screen to handle bottom navigation
+class MainNavigationScreen extends StatefulWidget {
+  const MainNavigationScreen({super.key});
+
+  @override
+  State<MainNavigationScreen> createState() => _MainNavigationScreenState();
+}
+
+class _MainNavigationScreenState extends State<MainNavigationScreen> {
+  int _currentIndex = 0;
+
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const JobsScreen(),
+    const Scaffold(body: Center(child: Text('Profile Screen'))),
+    const Scaffold(body: Center(child: Text('Play Screen'))),
+    const Scaffold(body: Center(child: Text('Career Screen'))),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _screens[_currentIndex],
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
   Widget _buildBottomNavigationBar() {
     return Container(
       decoration: BoxDecoration(
@@ -795,6 +821,346 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+// Jobs Screen
+class JobsScreen extends StatefulWidget {
+  const JobsScreen({super.key});
+
+  @override
+  State<JobsScreen> createState() => _JobsScreenState();
+}
+
+class _JobsScreenState extends State<JobsScreen> {
+  String _selectedLanguage = 'English';
+  String _selectedCategory = 'Private Jobs';
+
+  final List<String> _categories = [
+    'Private Jobs',
+    'Walk-In Jobs',
+    'Govt. Jobs',
+    'Overseas Jobs',
+    'All Jobs',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header
+            _buildHeader(),
+            // Category Filter Bar
+            _buildCategoryFilterBar(),
+            // Job Listings
+            Expanded(
+              child: _buildJobListings(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          // Logo
+          Row(
+            children: [
+              Image.asset(
+                'assets/logos/shraminLogo.png',
+                height: 30,
+                width: 30,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(Icons.settings, color: Colors.blue, size: 30);
+                },
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'Shramin',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          // Install App Button
+          ElevatedButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.download, size: 18),
+            label: const Text('Install App'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          // Notification Icon
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.notifications_outlined, size: 24),
+                onPressed: () {},
+              ),
+              Positioned(
+                right: 8,
+                top: 8,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                  constraints: const BoxConstraints(
+                    minWidth: 16,
+                    minHeight: 16,
+                  ),
+                  child: const Text(
+                    '6',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // Settings Icon
+          IconButton(
+            icon: Image.asset(
+              'assets/logos/setting.png',
+              height: 24,
+              width: 24,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.settings_outlined, size: 24);
+              },
+            ),
+            onPressed: () {},
+          ),
+          // Profile Icon
+          IconButton(
+            icon: Image.asset(
+              'assets/logos/Person.png',
+              height: 24,
+              width: 24,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.person_outline, size: 24);
+              },
+            ),
+            onPressed: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryFilterBar() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: _categories.map((category) {
+            final isSelected = category == _selectedCategory;
+            return Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedCategory = category;
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.teal : Colors.white,
+                    borderRadius: BorderRadius.circular(25),
+                    border: Border.all(
+                      color: isSelected ? Colors.teal : Colors.teal,
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Text(
+                    category,
+                    style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.teal,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildJobListings() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return _buildJobCard(index);
+      },
+    );
+  }
+
+  Widget _buildJobCard(int index) {
+    final locations = [
+      'Gorakhpur (Uttar Pradesh)',
+      'Kanpur (Uttar Pradesh)',
+      'Kanpur (Uttar Pradesh)',
+    ];
+    final location = locations[index % locations.length];
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Field Technician',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Genus Power Infrastructures Ltd',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Company Logo
+              Image.asset(
+                'assets/logos/shraminLogo.png',
+                height: 40,
+                width: 40,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade100,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: const Icon(Icons.settings, color: Colors.blue),
+                  );
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          // Job Details
+          _buildJobDetail(Icons.build, 'Trade/Job Category : Electrician'),
+          const SizedBox(height: 8),
+          _buildJobDetail(Icons.location_on, 'Location : $location'),
+          const SizedBox(height: 8),
+          _buildJobDetail(Icons.school, 'Education : ITI'),
+          const SizedBox(height: 8),
+          _buildJobDetail(Icons.person, 'Experience : 1-2 Yrs'),
+          const SizedBox(height: 8),
+          _buildJobDetail(Icons.account_balance_wallet, 'Salary : Rs. 15001 to Rs.25000'),
+          const SizedBox(height: 16),
+          // View Button
+          Align(
+            alignment: Alignment.centerRight,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'View',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildJobDetail(IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: Colors.grey.shade600),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 13,
+              color: Colors.grey.shade700,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
