@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 20),
                     // Best Jobs Section
                     _buildBestJobsSection(),
-                    const SizedBox(height: 80), // Space for floating button
+                    const SizedBox(height: 20), // Space for floating button
                   ],
                 ),
               ),
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -90,77 +90,91 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         children: [
           // Logo
-          Image.asset(
-            'assets/logos/shraminLogo.png',
-            height: 40,
-            width: 100,
-            errorBuilder: (context, error, stackTrace) {
-              return const Text(
-                'ShramiN',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              );
-            },
-          ),
-          const Spacer(),
-          // Language Dropdown
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: DropdownButton<String>(
-              value: _selectedLanguage,
-              underline: const SizedBox(),
-              isDense: true,
-              items: ['English', 'Hindi', 'Marathi'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: const TextStyle(fontSize: 14),
+          Flexible(
+            child: Image.asset(
+              'assets/logos/shraminLogo.png',
+              height: 40,
+              width: 100,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                return const Text(
+                  'ShramiN',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 );
-              }).toList(),
-              onChanged: (String? newValue) {
-                if (newValue != null) {
-                  setState(() {
-                    _selectedLanguage = newValue;
-                  });
-                }
               },
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 8),
+          // Language Dropdown
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: DropdownButton<String>(
+                value: _selectedLanguage,
+                underline: const SizedBox(),
+                isDense: true,
+                isExpanded: true,
+                items: ['English', 'Hindi', 'Marathi'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: const TextStyle(fontSize: 12),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  if (newValue != null) {
+                    setState(() {
+                      _selectedLanguage = newValue;
+                    });
+                  }
+                },
+              ),
+            ),
+          ),
+          const SizedBox(width: 4),
           // Notification Icon
           Stack(
+            clipBehavior: Clip.none,
             children: [
               IconButton(
-                icon: const Icon(Icons.notifications_outlined, size: 24),
+                icon: const Icon(Icons.notifications_outlined, size: 22),
+                padding: const EdgeInsets.all(8),
+                constraints: const BoxConstraints(
+                  minWidth: 40,
+                  minHeight: 40,
+                ),
                 onPressed: () {},
               ),
               Positioned(
-                right: 8,
-                top: 8,
+                right: 6,
+                top: 6,
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(3),
                   decoration: const BoxDecoration(
                     color: Colors.red,
                     shape: BoxShape.circle,
                   ),
                   constraints: const BoxConstraints(
-                    minWidth: 16,
-                    minHeight: 16,
+                    minWidth: 14,
+                    minHeight: 14,
                   ),
                   child: const Text(
                     '6',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 10,
+                      fontSize: 9,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
@@ -169,26 +183,38 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
+          const SizedBox(width: 4),
           // Settings Icon
           IconButton(
+            padding: const EdgeInsets.all(8),
+            constraints: const BoxConstraints(
+              minWidth: 40,
+              minHeight: 40,
+            ),
             icon: Image.asset(
               'assets/logos/setting.png',
-              height: 24,
-              width: 24,
+              height: 22,
+              width: 22,
               errorBuilder: (context, error, stackTrace) {
-                return const Icon(Icons.settings_outlined, size: 24);
+                return const Icon(Icons.settings_outlined, size: 22);
               },
             ),
             onPressed: () {},
           ),
+          const SizedBox(width: 4),
           // Profile Icon
           IconButton(
+            padding: const EdgeInsets.all(8),
+            constraints: const BoxConstraints(
+              minWidth: 40,
+              minHeight: 40,
+            ),
             icon: Image.asset(
               'assets/logos/Person.png',
-              height: 24,
-              width: 24,
+              height: 22,
+              width: 22,
               errorBuilder: (context, error, stackTrace) {
-                return const Icon(Icons.person_outline, size: 24);
+                return const Icon(Icons.person_outline, size: 22);
               },
             ),
             onPressed: () {},
@@ -672,7 +698,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildFloatingJobHelpline() {
     return Container(
-      margin: const EdgeInsets.only(bottom: 70),
+      margin: const EdgeInsets.only(bottom: 60),
       child: FloatingActionButton.extended(
         onPressed: () {},
         backgroundColor: Colors.green,
