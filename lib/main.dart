@@ -389,43 +389,46 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: Stack(
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (service['image'] != null)
-                      Image.asset(
-                        service['image'] as String,
-                        height: 40,
-                        width: 40,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Icon(
-                            service['icon'] as IconData,
-                            size: 40,
-                            color: Colors.blue,
-                          );
-                        },
-                      )
-                    else
-                      Icon(
-                        service['icon'] as IconData,
-                        size: 40,
-                        color: Colors.blue,
-                      ),
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Text(
-                        service['label'] as String,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      if (service['image'] != null)
+                        Image.asset(
+                          service['image'] as String,
+                          height: 40,
+                          width: 40,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(
+                              service['icon'] as IconData,
+                              size: 40,
+                              color: Colors.blue,
+                            );
+                          },
+                        )
+                      else
+                        Icon(
+                          service['icon'] as IconData,
+                          size: 40,
+                          color: Colors.blue,
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Text(
+                          service['label'] as String,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 if (service['isNew'] == true)
                   Positioned(
@@ -764,7 +767,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
-              'assets/logos/play.png',
+              'assets/logos/blackplay.png',
               height: 24,
               width: 24,
               errorBuilder: (context, error, stackTrace) {
@@ -778,7 +781,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
-              'assets/logos/career.png',
+              'assets/logos/blackcareerlogo.png',
               height: 24,
               width: 24,
               errorBuilder: (context, error, stackTrace) {
